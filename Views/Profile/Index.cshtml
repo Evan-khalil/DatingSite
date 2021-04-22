@@ -1,0 +1,113 @@
+﻿@model DatingSite.Models.ProfileModel
+
+@{
+    ViewBag.Title = "Index";
+}
+
+
+<script>
+    var userId = "@Model.CurrentUser.Id"
+</script>
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-4">
+            <header class="header">
+                <div class="profile-img">
+                    @{
+                        var imgSrc = "";
+                        if (Model.ProfilpageImage != null)
+                        {
+                            var base64 = Convert.ToBase64String(Model.ProfilpageImage);
+                            imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                        }
+                        else
+                        {
+                            imgSrc = "/Content/Images/noimage.jpg";
+                        }
+                        <img class="img-responsive" src="@imgSrc" alt="No image" width="280" height="280" />
+                    }
+                </div>
+                <div class="content left-content">
+                    <h2>@Model.Firstname @Model.Lastname</h2>
+
+                    <div class="about-text">
+                        @{
+                            if (Model.Description != null)
+                            {
+                                <p>@Model.Description</p>
+                            }
+                            else
+                            {
+                                <p>
+                                </p>
+                            }
+
+                        }
+                    </div>
+                    <hr />
+                </div>
+                <div class="editContent left-content">
+                    <ul>
+                        <li style="display: block;">@Html.ActionLink("Edit", "Edit")</li>
+                        <li style="display: block;">@Html.ActionLink("ChangePassword", "ChangePassword", "Manage")</li>
+
+                    </ul>
+                </div>
+                <hr />
+
+
+            </header>
+            <!-- .header-->
+        </div>
+        <!-- .left-col-block -->
+
+
+        <div class="col-md-8">
+
+            <div>
+                <ul class="nav nav-tabs">
+                    
+                    <li>
+                        @Ajax.ActionLink("Friends", "MyFriends",
+                                        new AjaxOptions()
+                                        {
+                                            HttpMethod = "GET",
+                                            UpdateTargetId = "updateDiv",
+                                            InsertionMode = InsertionMode.Replace
+                                        })
+                    </li>
+                   
+                </ul>
+            </div>
+
+            <div id="updateDiv">
+                @Html.Partial("Posts", Model.Posts)
+            </div>
+
+        </div>
+        <!-- .right-col-block -->
+    </div>
+    <!-- .columns-block -->
+</div>
+
+@section scripts {
+    <script src="~/Scripts/notify.min.js"></script>
+
+    <script src="~/Scripts/profile-friends.js"></script>
+    <script src="~/Scripts/profile-post.js"></script>
+}
+
+@section styles {
+    <link href="~/Content/profilepage-post-style.css/profilpage-post.css" rel="stylesheet" />
+    <link href="~/Content/profilepage-post-style.css/posts-style.css" rel="stylesheet" />
+    <link href="~/Content/profilepage-post-style.css/post-modal.css" rel="stylesheet" />
+}
+
+<style>
+
+    .left-content {
+        margin-bottom: 25px;
+    }
+</style>

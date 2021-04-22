@@ -1,0 +1,198 @@
+﻿@model DatingSite.Models.PostsModelId
+
+
+<br />
+
+@{
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+        CreatePost
+    </button>
+    <br />
+}
+
+
+
+<hr />
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Post</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <textarea id="postText"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button id="submitPost" data-dismiss="modal" type="button" class="btn btn-primary">Share</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+
+    textarea {
+        width: 100%;
+        height: 120px;
+        float: right;
+        -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+        -moz-box-sizing: border-box; /* Firefox, other Gecko */
+        box-sizing: border-box; /* Opera/IE 8+ */
+    }
+</style>
+
+@if (Model.IsIdentity)
+{
+    <div>
+        @foreach (var item in Model.Posts)
+        {
+            <div class="card b-1 hover-shadow mb-20">
+                <div class="media card-body">
+                    <div class="media-left pr-12">
+                        @{
+                            var imgSrc = "";
+                            if (item.Sender.ProfileImage != null)
+                            {
+                                var base64 = Convert.ToBase64String(item.Sender.ProfileImage);
+                                imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                            }
+                            else
+                            {
+                                imgSrc = "/Content/Images/noimage.jpg";
+                            }
+                            <a href="@Url.Action("UserProfile", "Profile", new { id = item.Sender.Id })">
+                                <img class="avatar avatar-xl radius" src="@imgSrc" alt="...">
+                            </a>
+                        }
+
+                    </div>
+                    <div class="media-body">
+                        <div class="mb-2">
+                            <a href="@Url.Action("UserProfile", "Profile", new { id = item.Sender.Id })">
+                                <span class="fs-20 pr-16">@item.Sender.Firstname @item.Sender.Lastname</span>
+
+                            </a>
+                           
+                          
+                        </div>
+                        <div class="media-delete-btn">
+                            <span id="close" data-toggle="modal" data-target="#deleteModal">x</span>
+                        </div>
+
+
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content" style="height: 200px;">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                    <div class="modal-body" style="height: 60px;">
+                                        Are You Sure You Wanna Delete This Post
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                        <button type="button" data-post-id="@item.Id" class="btn btn-primary deleteBtn">Delete</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="media-post">
+                            <p>@item.Text</p>
+                        </div>
+                    </div>
+                </div>
+                <footer class="card-footer flexbox align-items-center">
+                    <div>
+                        <strong>Published:</strong>
+                        <span>@item.TimeAgo</span>
+                    </div>
+                </footer>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <div>
+        @foreach (var item in Model.Posts)
+        {
+            <div class="card b-1 hover-shadow mb-20">
+                <div class="media card-body">
+                    <div class="media-left pr-12">
+                        @{
+                            var imgSrc = "";
+                            if (item.Sender.ProfileImage != null)
+                            {
+                                var base64 = Convert.ToBase64String(item.Sender.ProfileImage);
+                                imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                            }
+                            else
+                            {
+                                imgSrc = "/Content/Images/noimage.jpg";
+                            }
+                            <a href="@Url.Action("UserProfile", "Profile", new { id = item.Sender.Id })">
+                                <img class="avatar avatar-xl radius" src="@imgSrc" alt="...">
+                            </a>
+                        }
+
+                    </div>
+                    <div class="media-body">
+                        <div class="mb-2">
+                            <a href="@Url.Action("UserProfile", "Profile", new { id = item.Sender.Id })">
+                                <span class="fs-20 pr-16">@item.Sender.Firstname @item.Sender.Lastname</span>
+                            </a>
+                        </div>
+                        @{
+                            if (Model.identityId == item.Sender.Id)
+                            {
+                                <div class="media-delete-btn">
+                                    <span id="close" data-toggle="modal" data-target="#deleteModal">x</span>
+                                </div>
+                                <!-- Modal -->
+                                <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                    <div class="modal-dialog" role="document">
+                                        <div class="modal-content" style="height: 200px;">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="exampleModalLabel">Confirm</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body" style="height: 60px;">
+                                                Are You Sure You Wanna Delete This Post
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button type="button" data-post-id="@item.Id" class="btn btn-primary deleteBtn">Delete</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                        <div class="media-post">
+                            <p>@item.Text</p>
+                        </div>
+                    </div>
+                </div>
+                <footer class="card-footer flexbox align-items-center">
+                    <div>
+                        <strong>Published:</strong>
+                        <span>@item.TimeAgo</span>
+                    </div>
+                </footer>
+            </div>
+        }
+    </div>
+}

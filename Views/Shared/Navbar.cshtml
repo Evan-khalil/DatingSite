@@ -1,0 +1,44 @@
+﻿<div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a href="@Url.Action("Index", "Home")">
+                @*<img src="~/Content/Images/download.jpg" class="responsive" />*@
+                <span class="glyphicon glyphicon-home" aria-hidden="true" style="padding: 15px 200px 11px; font-size: 22px;"></span>
+
+            </a>
+            <style>
+                .responsive {
+                    width: 100%;
+                    height: auto;
+                }
+            </style>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav">
+               
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <li>
+                        <a href="@Url.Action("Index", "Search")">
+                            Look For Friends
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        </a>
+                    </li>
+                }
+            </ul>
+            @Html.Partial("LoginPartial")
+        </div>
+    </div>
+</div>
+<style>
+    .responsive {
+        width: 100%;
+        height: auto;
+    }
+    
+</style>

@@ -1,0 +1,73 @@
+﻿@model IEnumerable<DatingSite.Models.SearchModel>
+
+<ul>
+    @foreach (var item in Model)
+    {
+        <li href="#" class="list-group-item text-left">
+            @{
+                var imgSrc = "";
+                if (item.Image != null)
+                {
+                    var base64 = Convert.ToBase64String(item.Image);
+                    imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                }
+                else
+                {
+                    imgSrc = "/Content/Images/noimage.jpg";
+                }
+                <a href="@Url.Action("UserProfile", "Profile", new { id = item.UserId})">
+                    <img class="img-thumbnail" src="@imgSrc" alt="No image" width="75" height="75" style="border-radius: 50px;" />
+                </a>
+            }
+            <label class="name">
+                @Html.ActionLink(item.Name, "UserProfile", "Profile", new { id = item.UserId }, null)
+            </label>
+        </li>
+    }
+</ul>
+
+<style>
+
+    .list-content {
+        min-height: 300px;
+    }
+
+        .list-content .list-group .title {
+            background: #5bc0de;
+            border: 2px solid #DDDDDD;
+            font-weight: bold;
+            color: #FFFFFF;
+        }
+
+    .list-group-item img {
+        height: 80px;
+        width: 80px;
+    }
+
+    .jumbotron .btn {
+        padding: 5px 5px !important;
+        font-size: 12px !important;
+    }
+
+    .prj-name {
+        color: #5bc0de;
+    }
+
+    .break {
+        width: 100%;
+        margin: 20px;
+    }
+
+    .name {
+        color: #5bc0de;
+    }
+
+    .pull-right {
+        margin-right: 20px;
+    }
+
+    .btn {
+        padding: 5px 7px;
+        border-radius: 5px;
+    }
+</style>

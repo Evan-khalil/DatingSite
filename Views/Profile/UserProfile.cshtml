@@ -1,0 +1,125 @@
+﻿@model DatingSite.Models.UserProfileModel
+
+@{
+    ViewBag.Title = "User Profile";
+}
+
+
+<script>
+    var userId = "@Model.UserId"
+</script>
+<script>
+    $(function () {
+        $('[data-toggle="popover"]').popover()
+    })</script>
+
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-md-4">
+            <header class="header theiaStickySidebar">
+                <div class="profile-img">
+                    @{
+                        var imgSrc = "";
+                        if (Model.Image != null)
+                        {
+                            var base64 = Convert.ToBase64String(Model.Image);
+                            imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                        }
+                        else
+                        {
+                            imgSrc = "/Content/Images/noimage.jpg";
+                        }
+                        <img class="img-responsive" src="@imgSrc" alt="No image" width="280" height="280" />
+                    }
+                </div>
+                <hr />
+                <div class="content">
+                    <h2>@Model.Firstname @Model.Lastname</h2>
+
+                    <div class="about-text">
+                        @{
+                            if (Model.Description != null)
+                            {
+                                <p>@Model.Description</p>
+                            }
+                            else
+                            {
+                                <p>
+
+                                </p>
+                            }
+
+                        }
+
+                    </div>
+                    <br />
+                    <hr />
+
+
+
+
+                    <br />
+                    <hr />
+
+                    <div class="userProfileRelationStatusContent">
+                        @{
+                            switch (Model.RelationStatusToIdentity)
+                            {
+
+                                case DatingSite.Models.FriendshipIdentity.HasRecievedRequest:
+                                    <a href="#" class="acceptRequestUserProfile" data-post-id="@Model.RelationStatusId" data-user-id="@Model.UserId">AcceptRequest</a>
+                                    <br />
+                                    <a href="#" class="declineRequestUserProfile" data-post-id="@Model.RelationStatusId" data-user-id="@Model.UserId">DeclineRequest</a>
+                                    break;
+                                case DatingSite.Models.FriendshipIdentity.IsNotFriend:
+                                    <a href="#" class="sendRequestUserProfile" data-post-id="@Model.RelationStatusId" data-user-id="@Model.UserId">SendRequest</a>
+                                    break;
+                                default:
+                                    break;
+                            }
+
+                        }
+                    </div>
+
+                </div>
+
+            </header>
+            <!-- .header-->
+        </div>
+        <!-- .left-col-block -->
+
+
+        <div class="col-md-8">
+
+            <div>
+                <ul class="nav nav-tabs">
+                    <li>
+                        @Html.ActionLink("Your Page", "UserProfile", "Profile", Model.UserId, null)
+                    </li>
+                </ul>
+            </div>
+            <div id="updateDiv">
+                @Html.Partial("Posts", Model.Posts)
+            </div>
+
+        </div>
+        <!-- Sticky -->
+    </div>
+    <!-- .right-col-block -->
+</div>
+
+
+
+
+@section scripts {
+    <script src="~/Scripts/notify.min.js"></script>
+    <script src="~/Scripts/profile-post.js"></script>
+}
+
+@section styles {
+    <link href="~/Content/profilepage-post-style.css/profilpage-post.css" rel="stylesheet" />
+    <link href="~/Content/profilepage-post-style.css/posts-style.css" rel="stylesheet" />
+    <link href="~/Content/profilepage-post-style.css/post-modal.css" rel="stylesheet" />
+}

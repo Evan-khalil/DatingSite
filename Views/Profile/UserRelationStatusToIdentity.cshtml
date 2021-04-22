@@ -1,0 +1,20 @@
+﻿@model DatingSite.Models.FriendshipStatus
+
+@{
+    switch (Model.RelationStatusToIdentity)
+    {
+        
+        
+        case DatingSite.Models.FriendshipIdentity.HasRecievedRequest:
+            <a href="#" class="acceptRequestUserProfile" data-post-id="@Model.RelationStatusId" data-user-id="@Model.UserId">AcceptRequest</a>
+            <br />
+            <a href="#" class="declineRequestUserProfile" data-post-id="@Model.RelationStatusId" data-user-id="@Model.UserId">DeclineRequest</a>
+            break;
+        case DatingSite.Models.FriendshipIdentity.IsNotFriend:
+            <a href="#" class="sendRequestUserProfile" data-post-id="@Model.RelationStatusId" data-user-id="@Model.UserId">SendRequest</a>
+            break;
+        default:
+            break;
+    }
+
+}

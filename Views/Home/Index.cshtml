@@ -1,0 +1,49 @@
+﻿@model IEnumerable<DatingSite.ApplicationUser>
+@{
+    ViewBag.Title = "HomePage";
+}
+
+
+<div class="jumbotron">
+    <h1>OpenHeart</h1>
+    <p class="lead">A website for all open hearts</p>
+    <img src="~/Content/Images/jumbotron2 .jpg" />
+
+
+</div>
+
+<div class="row">
+
+    @foreach (var item in Model)
+    {
+        <div class="col-md-4">
+            <!--Card-->
+            <div class="card" style="width: 20rem;">
+                @{
+                    var imgSrc = "";
+                    if (item.ProfileImage != null)
+                    {
+                        var base64 = Convert.ToBase64String(item.ProfileImage);
+                        imgSrc = String.Format("data:image/gif;base64,{0}", base64);
+                    }
+                    else
+                    {
+                        imgSrc = "/Content/Images/noimage.jpg";
+                    }
+                }
+                <a href="@Url.Action("UserProfile", "Profile", new { id = item.Id })">
+                    <img class="card-img-top" width="200" height="190" src="@imgSrc" alt="Card image cap" style="border-radius: 5px;">
+                </a>
+                <div class="card-block">
+                    <a href="@Url.Action("UserProfile", "Profile", new { id = item.Id })">
+                        <h4 class="card-title">@item.Firstname @item.Lastname</h4>
+                    </a>
+                    <p class="card-text">@item.Description</p>
+                  
+                </div>
+            </div>
+            <!--/.Card-->
+        </div>
+    }
+
+</div>
